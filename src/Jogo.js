@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 
 export default function Jogo(props) {
   const [tabuleiro, setTabuleiro] = useState(Array(9).fill(null));
-  const [vezDoX, setVezDoX] = useState(true);
+  const [X, setX] = useState(true);
   const [vencedor, setVencedor] = useState(null);
+
+  const { player1, player2 } = props;
+
+  useEffect(() => {
+    if (vencedor) {
+      Alert.alert(`Vencedor: ${vencedor}`, `Parabéns, ${vencedor === 'X' ? player1 : player2}`);}
+  }, [vencedor, player1, player2]);
 
   const handleClick = (index) => {
     if (vencedor || tabuleiro[index]) {
@@ -12,14 +19,14 @@ export default function Jogo(props) {
     }
 
     const novoTabuleiro = [...tabuleiro];
-    novoTabuleiro[index] = vezDoX ? 'X' : 'O';
+    novoTabuleiro[index] = X ? 'X' : 'O';
     setTabuleiro(novoTabuleiro);
-    setVezDoX(!vezDoX);
-    verificarVencedor(novoTabuleiro);
+    setX(!X);
+    verifVencedor(novoTabuleiro);
   };
 
-  const verificarVencedor = (tabuleiro) => {
-    const combinacoesVencedoras = [
+  const verifVencedor = (tabuleiro) => {
+    const combVence = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
@@ -30,7 +37,7 @@ export default function Jogo(props) {
       [2, 4, 6],
     ];
 
-    for (const combinacao of combinacoesVencedoras) {
+    for (const combinacao of combVence) {
       const [a, b, c] = combinacao;
       if (tabuleiro[a] && tabuleiro[a] === tabuleiro[b] && tabuleiro[a] === tabuleiro[c]) {
         setVencedor(tabuleiro[a]);
@@ -45,7 +52,7 @@ export default function Jogo(props) {
 
   const handleRestart = () => {
     setTabuleiro(Array(9).fill(null));
-    setVezDoX(true);
+    setX(true);
     setVencedor(null);
   };
 
@@ -64,7 +71,7 @@ export default function Jogo(props) {
     if (vencedor) {
       return `Vencedor: ${vencedor}`;
     } else {
-      return `Vez do jogador: ${vezDoX ? 'X' : 'O'}`;
+      return `Vez do jogador: ${X ? 'X' : 'O'}`;
     }
   };
 
@@ -87,9 +94,9 @@ export default function Jogo(props) {
           {renderSquare(7)}
           {renderSquare(8)}
         </View>
-      </View>
+        </View>
       <Button title="Reiniciar" onPress={handleRestart} />
-      <Button title="Voltar" onPress={() => props.changeScreen("Home")} />
+      <Button title="Voltar" onPress={() => props.changeScreen("home")} />
     </View>
   );
 }

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { StyleSheet,View} from 'react-native';
 import Home from './src/Home'
 import Jogo from './src/Jogo'
+import Jogo2 from './src/Jogo2'
+import Jogo3 from './src/Jogo3'
 
 export default function App() { //exportando uma função padrão
   const [player1, setPlayer1 ] = useState("");
@@ -28,6 +30,8 @@ const changeScreen = (newScreen) => setScreen(newScreen);
           />
         )}
       {checkScreen("jogo") &&  (<Jogo changeScreen={changeScreen} />)}
+      {checkScreen("jogo2") &&  (<Jogo2 changeScreen={changeScreen} />)}
+      {checkScreen("jogo3") &&  (<Jogo3 changeScreen={changeScreen} />)}
       </View>
   );
 }
