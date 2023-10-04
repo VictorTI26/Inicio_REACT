@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
 
-export default function App() {
+export default function Jogo3(props) {
   const [cards, setCards] = useState(generateCards());
   const [flippedIndices, setFlippedIndices] = useState([]);
   const [matchedPairs, setMatchedPairs] = useState([]);
@@ -12,7 +12,7 @@ export default function App() {
       if (cards[index1] === cards[index2]) {
         setMatchedPairs([...matchedPairs, cards[index1]]);
       }
-      setTimeout(() => setFlippedIndices([]), 500);
+      setTimeout(() => setFlippedIndices([]),500);
     }
   }, [flippedIndices, cards, matchedPairs]);
 
@@ -44,11 +44,6 @@ export default function App() {
     <TouchableOpacity
       style={[
         styles.card,
-        {
-          backgroundColor: flippedIndices.includes(index) || matchedPairs.includes(value)
-            ? 'white'
-            : 'lightblue',
-        },
       ]}
       onPress={() => handleCardPress(index)}
       key={index}
@@ -62,6 +57,9 @@ export default function App() {
       <View style={styles.cardContainer}>
         {cards.map((value, index) => renderCard(value, index))}
       </View>
+      <View>
+      <Button title="Voltar" onPress={() => props.changeScreen("home")} />
+    </View>
     </View>
   );
 }
@@ -90,5 +88,10 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  voltar: {
+    backgroundColor: 'red',
+    padding: 10,
+    margin: 10,
   },
 });

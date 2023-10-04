@@ -1,55 +1,60 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 
 export default function Home({ mudarNomeJogadores, changeScreen }) {
   const [player1, setPlayer1] = useState('');
   const [player2, setPlayer2] = useState('');
 
-  const handleClick = () => {
+  const handleClick = (screen) => {
     if (mudarNomeJogadores) {
       mudarNomeJogadores(player1, player2);
-      changeScreen('jogo'); 
+      changeScreen(screen);
     }
-  }
-  const handleClick2 = () => {
-    if (mudarNomeJogadores) {
-      mudarNomeJogadores(player1, player2);
-      changeScreen('jogo2'); 
-    }
-  }
-  const handleClick3 = () => {
-    if (mudarNomeJogadores) {
-      mudarNomeJogadores(player1, player2);
-      changeScreen('jogo3'); 
-    } 
   }
 
   return (
     <View style={styles.container}>
       <TextInput placeholder='Nome player 1' value={player1} onChangeText={setPlayer1} />
-      <Text>O nome do jogador 1 é : {player1}</Text>
+      <Text style={styles.TextNome}>O nome do jogador 1 é : {player1}</Text>
       <TextInput placeholder='Nome player 2' value={player2} onChangeText={setPlayer2} />
-      <Text>O nome do jogador 2 é : {player2}</Text>
+      <Text style={styles.TextNome}>O nome do jogador 2 é : {player2}</Text>
 
-      <Button title="Jogo da velha" onPress={handleClick} />
-      <Button title="Jogo da forca" onPress={handleClick2} />
-      <Button title="Jogo da memoria" onPress={handleClick3} />
+      <TouchableOpacity style={styles.button} onPress={() => handleClick('jogo')}>
+        <Text style={styles.buttonText}>Jogo da velha</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => handleClick('jogo2')}>
+        <Text style={styles.buttonText}>Jogo da forca</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity style={styles.button} onPress={() => handleClick('jogo3')}>
+        <Text style={styles.buttonText}>Jogo da memoria</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { //criando uma classe e estilizando
+  container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  input: {
-    width: "80%",
-    height: 20,
-    borderStyle: "solid",
-    borderColor: "black",
-    borderWidth: 1
+  button: {
+    backgroundColor: 'red',
+    padding: 10,
+    margin: 5,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  textNome:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    margin: 10,
   },
 });

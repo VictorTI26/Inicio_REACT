@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 export default function Jogo(props) {
   const [tabuleiro, setTabuleiro] = useState(Array(9).fill(null));
@@ -10,7 +10,8 @@ export default function Jogo(props) {
 
   useEffect(() => {
     if (vencedor) {
-      Alert.alert(`Vencedor: ${vencedor}`, `Parabéns, ${vencedor === 'X' ? player1 : player2}`);}
+      Alert.alert(`Vencedor: ${vencedor}`, `Parabéns, ${vencedor === 'X' ? player1 : player2}`);
+    }
   }, [vencedor, player1, player2]);
 
   const handleClick = (index) => {
@@ -58,12 +59,13 @@ export default function Jogo(props) {
 
   const renderSquare = (index) => {
     return (
-      <Button
-        title={tabuleiro[index]}
+      <TouchableOpacity
+        style={[styles.quadrado, { backgroundColor: tabuleiro[index] ? 'gray' : 'white' }]}
         onPress={() => handleClick(index)}
-        style={styles.quadrado}
         disabled={tabuleiro[index] || vencedor}
-      />
+      >
+        <Text style={{ fontSize: 36 }}>{tabuleiro[index]}</Text>
+      </TouchableOpacity>
     );
   };
 
@@ -94,9 +96,13 @@ export default function Jogo(props) {
           {renderSquare(7)}
           {renderSquare(8)}
         </View>
-        </View>
-      <Button title="Reiniciar" onPress={handleRestart} />
-      <Button title="Voltar" onPress={() => props.changeScreen("home")} />
+      </View>
+      <TouchableOpacity style={styles.botao} onPress={handleRestart}>
+        <Text style={{ color: 'white', fontSize: 18 }}>Reiniciar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.botao} onPress={() => props.changeScreen("home")}>
+        <Text style={{ color: 'white', fontSize: 18 }}>Voltar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -112,11 +118,20 @@ const styles = StyleSheet.create({
   },
   linha: {
     flexDirection: 'row',
+    padding: 10,
   },
   quadrado: {
     width: 100,
     height: 100,
-    fontSize: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  botao: {
+    backgroundColor: 'red',
+    padding: 10,
+    margin: 10,
+    borderRadius: 50,
   },
   status: {
     fontSize: 24,
