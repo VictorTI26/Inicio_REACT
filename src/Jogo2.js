@@ -1,19 +1,14 @@
-import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
+export default function Jogo2(props) {
+  const [palavraOculta, setPalavraOculta] = useState('REACTNATIVE');
+  const [letrasAdivinhadas, setLetrasAdivinhadas] = useState([]);
+  const [erros, setErros] = useState(0);
 
-class Jogo2 extends Component {
-  state = {
-    palavraOculta: 'REACTNATIVE',
-    letrasAdivinhadas: [],
-    erros: 0,
-  };
+  const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-  letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-  onPressLetra = (letra) => {
-    const { letrasAdivinhadas, erros, palavraOculta } = this.state;
-
+  const onPressLetra = (letra) => {
     if (!letrasAdivinhadas.includes(letra)) {
       const novasLetrasAdivinhadas = [...letrasAdivinhadas, letra];
       let novosErros = erros;
@@ -22,38 +17,33 @@ class Jogo2 extends Component {
         novosErros++;
       }
 
-      this.setState({
-        letrasAdivinhadas: novasLetrasAdivinhadas,
-        erros: novosErros,
-      });
+      setLetrasAdivinhadas(novasLetrasAdivinhadas);
+      setErros(novosErros);
     }
   };
 
-  render() {
-    const { palavraOculta, letrasAdivinhadas, erros } = this.state;
-    const palavraExibida = palavraOculta
-      .split('')
-      .map((letra, index) =>
-        letrasAdivinhadas.includes(letra) ? letra : '_'
-      )
-      .join(' ');
+  const palavraExibida = palavraOculta
+    .split('')
+    .map((letra) => (letrasAdivinhadas.includes(letra) ? letra : '_'))
+    .join(' ');
 
-    return (
-      <View style={styles.container}>
-        <Text style={{ fontSize: 24 }}>{palavraExibida}</Text>
-        <Text style={{ fontSize: 20 }}>Erros: {erros}</Text>
-        <View style={styles.teclado}>
-          {this.letras.split('').map((letra) => (
-            <Button
-              key={letra}
-              title={letra}
-              onPress={() => this.onPressLetra(letra)}
-            />
-          ))}
-        </View>
+  return (
+    <View style={styles.container}>
+      <Text style={{ fontSize: 24 }}>{palavraExibida}</Text>
+      <Text style={{ fontSize: 20 }}>Erros: {erros}</Text>
+      <View style={styles.teclado}>
+        {letras.split('').map((letra) => (
+          <Button key={letra} title={letra} onPress={() => onPressLetra(letra)} />
+        ))}
       </View>
-    );
-  }
+      <TouchableOpacity style={styles.botao} onPress={handleRestart}>
+        <Text style={{ color: 'white', fontSize: 18 }}>Reiniciar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.botao} onPress={() => props.changeScreen("home")}>
+        <Text style={{ color: 'white', fontSize: 18 }}>Voltar</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -67,6 +57,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginTop: 20,
   },
+  botao: {
+    backgroundColor: 'blue',
+    padding: 10,
+    marginTop: 20,
+    borderRadius: 5,
+  },
 });
-
-export default Jogo2;

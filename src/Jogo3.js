@@ -17,7 +17,7 @@ export default function Jogo3(props) {
   }, [flippedIndices, cards, matchedPairs]);
 
   function generateCards() {
-    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20];
+    const numbers = [1, 2, 3, 4,];
     const allCards = numbers.concat(numbers);
     return shuffleArray(allCards);
   }
@@ -40,6 +40,12 @@ export default function Jogo3(props) {
     setFlippedIndices(newFlippedIndices);
   };
 
+  const handleRestart = () => {
+    setCards(generateCards());
+    setFlippedIndices([]);
+    setMatchedPairs([]);
+  };
+
   const renderCard = (value, index) => (
     <TouchableOpacity
       style={[
@@ -58,6 +64,9 @@ export default function Jogo3(props) {
         {cards.map((value, index) => renderCard(value, index))}
       </View>
       <View>
+      <TouchableOpacity style={styles.botao} onPress={handleRestart}>
+        <Text style = {{backgroundColor: 'blue'}}>Reiniciar</Text>
+      </TouchableOpacity>
       <Button title="Voltar" onPress={() => props.changeScreen("home")} />
     </View>
     </View>
