@@ -17,7 +17,7 @@ export default function Jogo3(props) {
   }, [flippedIndices, cards, matchedPairs]);
 
   function generateCards() {
-    const numbers = [1, 2, 3, 4,];
+    const numbers = [1, 2, 3, 4,5, 6, 7, ,8 ,9 ,10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
     const allCards = numbers.concat(numbers);
     return shuffleArray(allCards);
   }

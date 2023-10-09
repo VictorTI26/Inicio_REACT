@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
 export default function Jogo2(props) {
   const [palavraOculta, setPalavraOculta] = useState('REACTNATIVE');
   const [letrasAdivinhadas, setLetrasAdivinhadas] = useState([]);
   const [erros, setErros] = useState(0);
+  const [desabilitarBotoes, setDesabilitarBotoes] = useState(false);
 
   const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   const onPressLetra = (letra) => {
-    if (!letrasAdivinhadas.includes(letra)) {
+    if (!desabilitarBotoes && !letrasAdivinhadas.includes(letra)) {
       const novasLetrasAdivinhadas = [...letrasAdivinhadas, letra];
       let novosErros = erros;
 
@@ -19,7 +20,19 @@ export default function Jogo2(props) {
 
       setLetrasAdivinhadas(novasLetrasAdivinhadas);
       setErros(novosErros);
+
+      if (novosErros >= 6) {
+        setDesabilitarBotoes(true);
+        Alert.alert('Você perdeu!');
+      }
     }
+  };
+
+  const resetGame = () => {
+    setPalavraOculta('REACTNATIVE');
+    setLetrasAdivinhadas([]);
+    setErros(0);
+    setDesabilitarBotoes(false);
   };
 
   const palavraExibida = palavraOculta
@@ -30,15 +43,22 @@ export default function Jogo2(props) {
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 24 }}>{palavraExibida}</Text>
-      <Text style={{ fontSize: 20 }}>Erros: {erros}</Text>
+      <Text style={{ fontSize: 20 }}>Erros: {erros} / 6</Text>
       <View style={styles.teclado}>
         {letras.split('').map((letra) => (
-          <Button key={letra} title={letra} onPress={() => onPressLetra(letra)} />
+          <Button
+            key={letra}
+            title={letra}
+            onPress={() => onPressLetra(letra)}
+            disabled={desabilitarBotoes}
+          />
         ))}
       </View>
-      <TouchableOpacity style={styles.botao} onPress={handleRestart}>
-        <Text style={{ color: 'white', fontSize: 18 }}>Reiniciar</Text>
-      </TouchableOpacity>
+      {erros >= 6 && (
+        <TouchableOpacity style={styles.botao} onPress={resetGame}>
+          <Text style={{ color: 'white', fontSize: 18 }}>Reiniciar</Text>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity style={styles.botao} onPress={() => props.changeScreen("home")}>
         <Text style={{ color: 'white', fontSize: 18 }}>Voltar</Text>
       </TouchableOpacity>
