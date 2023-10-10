@@ -14,7 +14,7 @@ export default function Jogo(props) {
     }
   }, [vencedor, player1, player2]);
 
-  const handleClick = (index) => {
+  const click = (index) => {
     if (vencedor || tabuleiro[index]) {
       return;
     }
@@ -51,20 +51,20 @@ export default function Jogo(props) {
     }
   };
 
-  const handleRestart = () => {
+  const restart = () => {
     setTabuleiro(Array(9).fill(null));
     setX(true);
     setVencedor(null);
   };
 
-  const renderSquare = (index) => {
+  const renderQuadrado = (index) => {
     return (
       <TouchableOpacity
         style={[
           styles.quadrado,
           { backgroundColor: tabuleiro[index] ? 'gray' : 'white' },
         ]}
-        onPress={() => handleClick(index)}
+        onPress={() => click(index)}
         disabled={tabuleiro[index] || vencedor}
       >
         <Text style={styles.quadradoText}>{tabuleiro[index]}</Text>
@@ -85,22 +85,22 @@ export default function Jogo(props) {
       <Text style={styles.status}>{renderStatus()}</Text>
       <View style={styles.tabuleiro}>
         <View style={styles.linha}>
-          {renderSquare(0)}
-          {renderSquare(1)}
-          {renderSquare(2)}
+          {renderQuadrado(0)}
+          {renderQuadrado(1)}
+          {renderQuadrado(2)}
         </View>
         <View style={styles.linha}>
-          {renderSquare(3)}
-          {renderSquare(4)}
-          {renderSquare(5)}
+          {renderQuadrado(3)}
+          {renderQuadrado(4)}
+          {renderQuadrado(5)}
         </View>
         <View style={styles.linha}>
-          {renderSquare(6)}
-          {renderSquare(7)}
-          {renderSquare(8)}
+          {renderQuadrado(6)}
+          {renderQuadrado(7)}
+          {renderQuadrado(8)}
         </View>
       </View>
-      <TouchableOpacity title="Reiniciar" style={styles.botao} onPress={handleRestart}>
+      <TouchableOpacity title="Reiniciar" style={styles.botao} onPress={restart}>
         <Text style={styles.botaoText}>Reiniciar</Text>
       </TouchableOpacity>
       <TouchableOpacity title="Voltar" style={styles.botao} onPress={() => props.changeScreen("home")}>
