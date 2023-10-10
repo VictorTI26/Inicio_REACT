@@ -2,59 +2,55 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
 
 export default function Jogo3(props) {
-  const [cards, setCards] = useState(generateCards());
-  const [flippedIndices, setFlippedIndices] = useState([]);
-  const [matchedPairs, setMatchedPairs] = useState([]);
+  const [cards, setCards] = useState(gerarCards());
+  const [virarCard, setVirarCard] = useState([]);
+  const [pares, setPares] = useState([]);
 
   useEffect(() => {
-    if (flippedIndices.length === 2) {
-      const [index1, index2] = flippedIndices;
+    if (virarCard.length === 2) {
+      const [index1, index2] = virarCard;
       if (cards[index1] === cards[index2]) {
-        setMatchedPairs([...matchedPairs, cards[index1]]);
+        setPares([...pares, cards[index1]]);
       }
-      setTimeout(() => setFlippedIndices([]),500);
+      setTimeout(() => setVirarCard([]), 500);
     }
-  }, [flippedIndices, cards, matchedPairs]);
+  }, [virarCard, cards, pares]);
 
-  function generateCards() {
-    const numbers = [1, 2, 3, 4,5, 6, 7, ,8 ,9 ,10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
-    const allCards = numbers.concat(numbers);
-    return shuffleArray(allCards);
+  function gerarCards() {
+    const numeros = [...Array(25).keys()].slice(1);
+    const cartas = [...numeros, ...numeros];
+    const cartasEmbaralhadas = embaralhar(cartas);
+    return cartasEmbaralhadas;
   }
 
-  function shuffleArray(array) {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-    }
-    return shuffledArray;
-  }
+  function embaralhar(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }  
 
-  const handleCardPress = (index) => {
-    if (flippedIndices.includes(index) || flippedIndices.length === 2) {
+  const pressCard = (index) => {
+    if (virarCard.includes(index) || virarCard.length === 2) {
       return;
     }
 
-    const newFlippedIndices = [...flippedIndices, index];
-    setFlippedIndices(newFlippedIndices);
+    const newFlippedIndices = [...virarCard, index];
+    setVirarCard(newFlippedIndices);
   };
 
   const handleRestart = () => {
-    setCards(generateCards());
-    setFlippedIndices([]);
-    setMatchedPairs([]);
+    setCards(gerarCards());
+    setVirarCard([]);
+    setPares([]);
   };
 
   const renderCard = (value, index) => (
     <TouchableOpacity
-      style={[
-        styles.card,
-      ]}
-      onPress={() => handleCardPress(index)}
+      style={[styles.card,{backgroundColor:virarCard.includes(index) || pares.includes(value)? 'gray': 'white', },]}
+      onPress={() => pressCard(index)}
       key={index}
     >
-      <Text style={styles.cardText}>{flippedIndices.includes(index) || matchedPairs.includes(value) ? value : ''}</Text>
+      <Text style={styles.cardText}>
+        {virarCard.includes(index) || pares.includes(value) ? value : ''}
+      </Text>
     </TouchableOpacity>
   );
 
@@ -63,12 +59,18 @@ export default function Jogo3(props) {
       <View style={styles.cardContainer}>
         {cards.map((value, index) => renderCard(value, index))}
       </View>
-      <View>
-      <TouchableOpacity style={styles.botao} onPress={handleRestart}>
-        <Text style = {{backgroundColor: 'blue'}}>Reiniciar</Text>
-      </TouchableOpacity>
-      <Button title="Voltar" onPress={() => props.changeScreen("home")} />
-    </View>
+
+      <View style={styles.botoesContainer}>
+
+        <TouchableOpacity style={styles.botao} onPress={handleRestart}>
+          <Text style={styles.botaoTexto}>Reiniciar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.botao} onPress={() => props.changeScreen("home")}>
+          <Text style={styles.botaoTexto}>Voltar</Text>
+        </TouchableOpacity>
+        
+      </View>
     </View>
   );
 }
@@ -98,9 +100,18 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-  voltar: {
-    backgroundColor: 'red',
+  botoesContainer: {
+    marginTop: 20,
+  },
+  botao: {
+    backgroundColor: 'gray',
+    color: 'white',
     padding: 10,
-    margin: 10,
+    margin: 5,
+    borderRadius: 5,
+  },
+  botaoTexto: {
+    color: 'white',
+    fontSize: 18,
   },
 });

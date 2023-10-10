@@ -42,13 +42,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    backgroundColor: 'red',
+    backgroundColor: 'gray',
     padding: 10,
     margin: 5,
     borderRadius: 5,
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
   },

@@ -10,7 +10,7 @@ export default function Jogo(props) {
 
   useEffect(() => {
     if (vencedor) {
-      Alert.alert(`Vencedor: ${vencedor}`, `Parabéns, ${vencedor === 'X' ? player1 : player2}`);
+      alert(`Vencedor: ${vencedor} Parabéns, ${vencedor === 'X' ? player1 : player2}`);
     }
   }, [vencedor, player1, player2]);
 
@@ -23,11 +23,11 @@ export default function Jogo(props) {
     novoTabuleiro[index] = X ? 'X' : 'O';
     setTabuleiro(novoTabuleiro);
     setX(!X);
-    verifVencedor(novoTabuleiro);
+    verificarVencedor(novoTabuleiro);
   };
 
-  const verifVencedor = (tabuleiro) => {
-    const combVence = [
+  const verificarVencedor = (tabuleiro) => {
+    const combinacoesVencedoras = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
@@ -38,7 +38,7 @@ export default function Jogo(props) {
       [2, 4, 6],
     ];
 
-    for (const combinacao of combVence) {
+    for (const combinacao of combinacoesVencedoras) {
       const [a, b, c] = combinacao;
       if (tabuleiro[a] && tabuleiro[a] === tabuleiro[b] && tabuleiro[a] === tabuleiro[c]) {
         setVencedor(tabuleiro[a]);
@@ -60,11 +60,14 @@ export default function Jogo(props) {
   const renderSquare = (index) => {
     return (
       <TouchableOpacity
-        style={[styles.quadrado, { backgroundColor: tabuleiro[index] ? 'gray' : 'white' }]}
+        style={[
+          styles.quadrado,
+          { backgroundColor: tabuleiro[index] ? 'gray' : 'white' },
+        ]}
         onPress={() => handleClick(index)}
         disabled={tabuleiro[index] || vencedor}
       >
-        <Text style={{ fontSize: 36 }}>{tabuleiro[index]}</Text>
+        <Text style={styles.quadradoText}>{tabuleiro[index]}</Text>
       </TouchableOpacity>
     );
   };
@@ -73,7 +76,7 @@ export default function Jogo(props) {
     if (vencedor) {
       return `Vencedor: ${vencedor}`;
     } else {
-      return `Vez do jogador: ${X ? 'X' : 'O'}`;
+      return `Vez do jogador: ${X ? player1 : player2}`;
     }
   };
 
@@ -97,11 +100,11 @@ export default function Jogo(props) {
           {renderSquare(8)}
         </View>
       </View>
-      <TouchableOpacity style={styles.botao} onPress={handleRestart}>
-        <Text style={{ color: 'white', fontSize: 18 }}>Reiniciar</Text>
+      <TouchableOpacity title="Reiniciar" style={styles.botao} onPress={handleRestart}>
+        <Text style={styles.botaoText}>Reiniciar</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.botao} onPress={() => props.changeScreen("home")}>
-        <Text style={{ color: 'white', fontSize: 18 }}>Voltar</Text>
+      <TouchableOpacity title="Voltar" style={styles.botao} onPress={() => props.changeScreen("home")}>
+        <Text style={styles.botaoText}>Voltar</Text>
       </TouchableOpacity>
     </View>
   );
@@ -127,14 +130,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
   },
-  botao: {
-    backgroundColor: 'red',
-    padding: 10,
-    margin: 10,
-    borderRadius: 50,
+  quadradoText: {
+    fontSize: 36,
   },
   status: {
     fontSize: 24,
     marginBottom: 20,
+  },
+  botao: {
+    backgroundColor: 'grey',
+    color: 'white',
+    padding: 10,
+    marginTop: 20,
+    borderRadius: 5,
+  },
+  botaoText: {
+    color: 'black',
+    fontSize: 18,
   },
 });

@@ -29,9 +29,9 @@ const changeScreen = (newScreen) => setScreen(newScreen);
           changeScreen={changeScreen} 
           />
         )}
-      {checkScreen("jogo") &&  (<Jogo changeScreen={changeScreen} />)}
-      {checkScreen("jogo2") &&  (<Jogo2 changeScreen={changeScreen} />)}
-      {checkScreen("jogo3") &&  (<Jogo3 changeScreen={changeScreen} />)}
+      {checkScreen("jogo") &&  (<Jogo changeScreen={changeScreen} player1={player1} player2={player2} />)}
+      {checkScreen("jogo2") &&  (<Jogo2 changeScreen={changeScreen} player1={player1} player2={player2}/>)}
+      {checkScreen("jogo3") &&  (<Jogo3 changeScreen={changeScreen} player1={player1} player2={player2}/>)}
       </View>
   );
 }

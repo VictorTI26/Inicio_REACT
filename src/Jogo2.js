@@ -42,10 +42,10 @@ export default function Jogo2(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 24 }}>{palavraExibida}</Text>
-      <Text style={{ fontSize: 20 }}>Erros: {erros} / 6</Text>
+      <Text style={styles.textoGrande}>{palavraExibida}</Text>
+      <Text style={styles.textoPequeno}>Erros: {erros} / 6</Text>
       <View style={styles.teclado}>
-        {letras.split('').map((letra) => (
+      {letras.split('').map((letra) => (
           <Button
             key={letra}
             title={letra}
@@ -56,11 +56,11 @@ export default function Jogo2(props) {
       </View>
       {erros >= 6 && (
         <TouchableOpacity style={styles.botao} onPress={resetGame}>
-          <Text style={{ color: 'white', fontSize: 18 }}>Reiniciar</Text>
+          <Text style={styles.botaoTexto}>Reiniciar</Text>
         </TouchableOpacity>
       )}
       <TouchableOpacity style={styles.botao} onPress={() => props.changeScreen("home")}>
-        <Text style={{ color: 'white', fontSize: 18 }}>Voltar</Text>
+        <Text style={styles.botaoTexto}>Voltar</Text>
       </TouchableOpacity>
     </View>
   );
@@ -72,15 +72,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textoGrande: {
+    fontSize: 24,
+  },
+  textoPequeno: {
+    fontSize: 20,
+  },
   teclado: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 20,
   },
   botao: {
-    backgroundColor: 'blue',
+    backgroundColor: 'gray',
+    color: 'white',
     padding: 10,
     marginTop: 20,
     borderRadius: 5,
+  },
+  botaoTexto: {
+    color: 'black',
+    fontSize: 18,
   },
 });
