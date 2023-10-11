@@ -6,18 +6,9 @@ export default function Jogo3(props) {
   const [virarCard, setVirarCard] = useState([]);
   const [pares, setPares] = useState([]);
 
-  useEffect(() => {
-    if (virarCard.length === 2) {
-      const [index1, index2] = virarCard;
-      if (cards[index1] === cards[index2]) {
-        setPares([...pares, cards[index1]]);
-      }
-      setTimeout(() => setVirarCard([]), 500);
-    }
-  }, [virarCard, cards, pares]);
 
   function gerarCards() {
-    const numeros = [...Array(25).keys()].slice(1);
+    const numeros = [...Array(25).keys()].slice(1); 
     const cartas = [...numeros, ...numeros];
     const cartasEmbaralhadas = embaralhar(cartas);
     return cartasEmbaralhadas;
@@ -41,6 +32,16 @@ export default function Jogo3(props) {
     setVirarCard([]);
     setPares([]);
   };
+
+  useEffect(() => {
+    if (virarCard.length === 2) {
+      const [index1, index2] = virarCard;
+      if (cards[index1] === cards[index2]) {
+        setPares([...pares, cards[index1]]);
+      }
+      setTimeout(() => setVirarCard([]), 500);
+    }
+  }, [virarCard, cards, pares]);
 
   const renderCard = (value, index) => (
     <TouchableOpacity
@@ -69,7 +70,7 @@ export default function Jogo3(props) {
         <TouchableOpacity style={styles.botao} onPress={() => props.changeScreen("home")}>
           <Text style={styles.botaoTexto}>Voltar</Text>
         </TouchableOpacity>
-        
+
       </View>
     </View>
   );
