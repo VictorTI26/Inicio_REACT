@@ -23,7 +23,7 @@ export default function Jogo2(props) {
 
       if (novosErros >= 6) {
         setDesabilitarBotoes(true);
-        Alert.alert('Você perdeu!');
+        alert('Você perdeu!');
       }
     }
   };
