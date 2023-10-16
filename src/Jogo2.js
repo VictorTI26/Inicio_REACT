@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
 export default function Jogo2(props) {
-  const [palavraOculta, setPalavraOculta] = useState('REACTNATIVE');
+  const [palavraOculta, setPalavraOculta] = useState('');
   const [letrasAdivinhadas, setLetrasAdivinhadas] = useState([]);
   const [erros, setErros] = useState(0);
   const [desabilitarBotoes, setDesabilitarBotoes] = useState(false);
+  const [palavraEscolhida, setPalavraEscolhida] = useState(null);
 
   const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -28,24 +29,49 @@ export default function Jogo2(props) {
     }
   };
 
+  const confirmarPalavra = () => {
+    if (palavraOculta.trim() !== '') {
+      setPalavraEscolhida(palavraOculta.toUpperCase());
+    }
+  };
+
   const resetGame = () => {
-    setPalavraOculta('REACTNATIVE');
+    setPalavraOculta('');
     setLetrasAdivinhadas([]);
     setErros(0);
     setDesabilitarBotoes(false);
+    setPalavraEscolhida(null);
   };
 
-  const palavraExibida = palavraOculta
-    .split('')
-    .map((letra) => (letrasAdivinhadas.includes(letra) ? letra : '_'))
-    .join(' ');
+  const palavraExibida = palavraEscolhida
+    ? palavraEscolhida.split('').map((letra) =>
+        letrasAdivinhadas.includes(letra) ? letra : '_'
+      ).join(' ')
+    : palavraOculta; // Mostrar a palavra digitada até que seja confirmada
 
   return (
     <View style={styles.container}>
+      {!palavraEscolhida ? (
+        <>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite a palavra"
+            value={palavraOculta}
+            onChangeText={(text) => setPalavraOculta(text)}
+            editable={!desabilitarBotoes}
+          />
+          <Button
+            title="Confirmar"
+            onPress={confirmarPalavra}
+            disabled={desabilitarBotoes}
+          />
+        </>
+      ) : null}
+
       <Text style={styles.textoGrande}>{palavraExibida}</Text>
       <Text style={styles.textoPequeno}>Erros: {erros} / 6</Text>
       <View style={styles.teclado}>
-      {letras.split('').map((letra) => (
+        {letras.split('').map((letra) => (
           <Button
             key={letra}
             title={letra}
@@ -71,6 +97,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 20,
+    fontSize: 18,
+    paddingHorizontal: 10,
   },
   textoGrande: {
     fontSize: 24,
